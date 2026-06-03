@@ -1,0 +1,20 @@
+{
+  "name": "beyondtax",
+  "interface": {
+    "displayName": "Beyondtax"
+  },
+  "plugins": [
+    {
+      "name": "beyondtax-pro",
+      "source": {
+        "source": "local",
+        "path": "./plugins/beyondtax-pro"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
