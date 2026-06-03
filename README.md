@@ -25,7 +25,8 @@ Plugin package:
 Before describing the plugin as publicly ready, verify:
 
 - `https://pro-mcp.beyondtax.co/mcp` is live and auth-gated.
-- `https://pro-mcp.beyondtax.co/docs/mcp` returns 200.
-- `https://pro-mcp.beyondtax.co/privacy` returns 200.
-- `https://pro-mcp.beyondtax.co/terms` returns 200.
+- `https://pro.beyondtax.co/docs/mcp` returns 200 and renders the MCP documentation route.
+- `https://pro.beyondtax.co/privacy` returns 200.
+- `https://pro.beyondtax.co/terms` returns 200.
+- `https://pro-mcp.beyondtax.co/docs/mcp`, `/privacy`, and `/terms` redirect to the canonical Pro pages.
 - The Pro MCP registry includes `get_server_instructions`.
