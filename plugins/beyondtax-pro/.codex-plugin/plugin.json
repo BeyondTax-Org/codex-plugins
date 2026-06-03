@@ -1,13 +1,13 @@
 {
   "name": "beyondtax-pro",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Use the Beyondtax Pro MCP connector from Codex.",
   "author": {
     "name": "Beyondtax",
     "email": "support@beyondtax.co",
     "url": "https://beyondtax.co"
   },
-  "homepage": "https://pro-mcp.beyondtax.co/docs/mcp",
+  "homepage": "https://pro.beyondtax.co/docs/mcp",
   "repository": "https://github.com/BeyondTax-Org/codex-plugins",
   "license": "Proprietary",
   "keywords": [
@@ -32,8 +32,8 @@
       "Read"
     ],
     "websiteURL": "https://pro.beyondtax.co",
-    "privacyPolicyURL": "https://pro-mcp.beyondtax.co/privacy",
-    "termsOfServiceURL": "https://pro-mcp.beyondtax.co/terms",
+    "privacyPolicyURL": "https://pro.beyondtax.co/privacy",
+    "termsOfServiceURL": "https://pro.beyondtax.co/terms",
     "defaultPrompt": [
       "Show my Beyondtax Pro workspace overview.",
       "Find a Pro client or task.",
