@@ -1,6 +1,6 @@
 {
   "name": "beyondtax-pro",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Use the Beyondtax Pro MCP connector from Codex.",
   "author": {
     "name": "Beyondtax",
@@ -27,8 +27,6 @@
     "developerName": "Beyondtax",
     "category": "Productivity",
     "capabilities": [
-      "MCP",
-      "OAuth",
       "Read"
     ],
     "websiteURL": "https://pro.beyondtax.co",
@@ -41,6 +39,7 @@
     ],
     "brandColor": "#40806F",
     "composerIcon": "./assets/icon.svg",
-    "logo": "./assets/logo.png"
+    "logo": "./assets/logo.png",
+    "screenshots": []
   }
 }

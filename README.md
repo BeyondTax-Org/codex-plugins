@@ -8,7 +8,15 @@ This marketplace exposes the `beyondtax-pro` plugin. It connects Codex to the pu
 
 `https://pro-mcp.beyondtax.co/mcp`
 
-The plugin is read-oriented and uses OAuth. On first use, Codex may ask the user to complete the Beyondtax Pro OAuth login flow.
+Marketplace repository:
+
+`https://github.com/BeyondTax-Org/codex-plugins`
+
+Plugin display name:
+
+`Beyondtax Pro`
+
+The plugin is read-oriented and uses OAuth. During install, Codex should ask the user to complete the Beyondtax Pro OAuth login flow. If the plugin does not appear after adding the marketplace, refresh or restart Codex and check the plugin picker again.
 
 ## Marketplace
 
@@ -30,3 +38,4 @@ Before describing the plugin as publicly ready, verify:
 - `https://pro.beyondtax.co/terms` returns 200.
 - `https://pro-mcp.beyondtax.co/docs/mcp`, `/privacy`, and `/terms` redirect to the canonical Pro pages.
 - The Pro MCP registry includes `get_server_instructions`.
+- The marketplace policy keeps `authentication` as `ON_INSTALL`.
