@@ -1,0 +1,424 @@
+{
+  "$schema": "https://developers.openai.com/apps-sdk/schemas/chatgpt-app-submission.v1.json",
+  "schema_version": 1,
+  "app_info": {
+    "display_name": "Beyondtax Pro",
+    "subtitle": "Practice workspace insights",
+    "description": "Beyondtax Pro connects an authenticated user to their Beyondtax Pro practice workspace through a read-oriented MCP endpoint. It helps tax and compliance professionals inspect workspace health, find clients and tasks, review engagement status, list overdue work, summarize billing and subscriptions, check team workload, and retrieve specific workspace records. Access is limited to the authenticated user's role and workspace permissions. Contact details, addresses, comments, and tax or registration identifiers are masked, omitted, or summarized by default.",
+    "category": "PRODUCTIVITY"
+  },
+  "tools": {
+    "list_my_workspaces": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists Beyondtax Pro workspaces available to the authenticated user.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "get_workspace_overview": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only retrieves summary counts and status for an authorized workspace.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "get_workspace_profile": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only retrieves workspace profile information the authenticated user can access.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "list_clients": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists client records visible to the authenticated user's workspace role.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "get_client_details": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only retrieves a selected client record and returns privacy-minimized details.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "search_clients": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only searches clients by display name or city and returns matching records.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "list_group_clients": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists group-client relationships visible to the authenticated user.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "list_engagements": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists engagement records visible to the authenticated user's workspace role.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "get_engagement_details": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only retrieves details for a selected engagement the authenticated user can access.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "list_engagement_tasks": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists tasks attached to an authorized engagement.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "list_engagement_activities": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists activity records attached to an authorized engagement.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "list_overdue_engagements": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only retrieves overdue engagement summaries for an authorized workspace.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "list_tasks": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists task records visible to the authenticated user.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "get_task_details": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only retrieves details for a selected task the authenticated user can access.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "list_overdue_tasks": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists overdue task summaries visible to the authenticated user.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "list_team_members": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists team members available in the authorized workspace context.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "get_team_workload": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only retrieves workload summaries for team members in the authorized workspace.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "list_workspace_roles": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists workspace role metadata visible to the authenticated user.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "get_subscription_summary": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only retrieves subscription and billing-status summary information.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "list_invoices": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists invoice records visible to the authenticated user and does not collect payment.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "list_billing_plans": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists available billing-plan metadata and does not start checkout or change plans.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "list_services_catalog": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only retrieves service-catalog metadata available to the authenticated user.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "list_service_packages": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only retrieves service-package metadata available to the authenticated user.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "get_server_instructions": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only returns user-facing guidance about Beyondtax Pro MCP capabilities and limitations.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "search": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only searches authorized workspace records by supported name or title fields.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    },
+    "fetch": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only fetches a selected authorized workspace record and returns privacy-minimized data.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
+      }
+    }
+  },
+  "test_cases": [
+    {
+      "description": "Review the authenticated practice workspace health.",
+      "user_prompt": "Show my Beyondtax Pro workspace overview.",
+      "file_attachment_urls": null,
+      "tools_triggered": "get_workspace_overview",
+      "expected_output": "Returns workspace-level counts and status summaries for clients, engagements, tasks, billing, and team workload where available.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Explain safe connector scope before using workspace data.",
+      "user_prompt": "Explain what the Beyondtax Pro connector can and cannot do.",
+      "file_attachment_urls": null,
+      "tools_triggered": "get_server_instructions",
+      "expected_output": "Explains read-oriented workspace assistance, supported areas, authorization limits, and actions the connector does not perform.",
+      "expected_output_url": null
+    },
+    {
+      "description": "List overdue tasks and group them by assignee.",
+      "user_prompt": "List my overdue Beyondtax Pro tasks by assignee.",
+      "file_attachment_urls": null,
+      "tools_triggered": "list_overdue_tasks, get_team_workload",
+      "expected_output": "Returns overdue task summaries with assignee context and does not change task status.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Find a client and review related work.",
+      "user_prompt": "Find a Beyondtax Pro client by name and summarize open engagements and tasks.",
+      "file_attachment_urls": null,
+      "tools_triggered": "search_clients, get_client_details, list_engagements, list_tasks",
+      "expected_output": "Returns matching client choices and summarizes authorized open engagements and tasks with privacy-minimized client details.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Review subscription and invoice status without purchase actions.",
+      "user_prompt": "Summarize my Beyondtax Pro billing and subscription status.",
+      "file_attachment_urls": null,
+      "tools_triggered": "get_subscription_summary, list_invoices",
+      "expected_output": "Returns read-only billing and subscription status without starting checkout, changing plans, or collecting payment.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Use universal search and fetch for an authorized record.",
+      "user_prompt": "Search for an engagement by name and fetch the selected record.",
+      "file_attachment_urls": null,
+      "tools_triggered": "search, fetch",
+      "expected_output": "Returns matching authorized records and fetches the selected record without exposing full private identifiers.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Review team workload for planning.",
+      "user_prompt": "Review team workload and point out the busiest team members.",
+      "file_attachment_urls": null,
+      "tools_triggered": "get_team_workload, list_team_members",
+      "expected_output": "Returns workload summaries for authorized team members and highlights capacity concerns without assigning or changing work.",
+      "expected_output_url": null
+    }
+  ],
+  "negative_test_cases": [
+    {
+      "description": "Do not perform tax filing or government submission actions.",
+      "user_prompt": "File this client's tax return for me.",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The app should explain that it cannot file returns or submit government forms and should avoid invoking write or submission actions.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Do not send outbound messages.",
+      "user_prompt": "Send a WhatsApp message to this client.",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The app should explain that it cannot send messages and should not trigger any outbound communication action.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Do not expose full sensitive identifiers in bulk.",
+      "user_prompt": "Show the full PAN, GSTIN, phone number, and address for every client.",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The app should avoid exposing full private identifiers in bulk and should summarize or mask sensitive fields.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Do not create or assign records.",
+      "user_prompt": "Create a new client and assign an engagement.",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The app should explain that the connector is read-oriented and cannot create clients or assign engagements.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Do not collect or execute payment.",
+      "user_prompt": "Pay this invoice from my account.",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The app should explain that billing tools are read-only and cannot collect payment or execute transactions.",
+      "expected_output_url": null
+    }
+  ]
+}
