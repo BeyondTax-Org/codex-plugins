@@ -43,14 +43,16 @@ Built-in OpenAI app/plugin directory visibility is separate. It requires OpenAI 
 
 ## Tool And Prompt Inventory
 
-Record the current MCP registry before submission:
+- 2026-06-04 live production registry snapshot:
+  - Tool count: `26`
+  - Prompt count: `7`
+  - `get_server_instructions`: present
+  - Search posture: client display name/city, engagement name, task title
+  - Privacy posture: contact/address/comment/tax identifiers masked, omitted, summarized, or exposed only as presence flags
 
-- Tool count
-- Prompt count
-- Tool names and schemas
-- Prompt names and expected workflows
-- `get_server_instructions` output
-- Any `_meta` or server metadata exposed to OpenAI clients
+Detailed snapshot:
+
+`OPENAI_APP_DIRECTORY_REGISTRY_SNAPSHOT_20260604.md`
 
 ## Demo Review Account
 
@@ -66,7 +68,7 @@ Do not commit credentials to this repository.
 
 ## Test Cases
 
-Run and record golden prompt tests before submission:
+Golden prompt set:
 
 - "Show my Beyondtax Pro workspace overview."
 - "Find client Bower and summarize open engagements and tasks."
@@ -81,6 +83,10 @@ For each test, record:
 - Expected response shape
 - Any privacy masking observed
 - Pass/fail result
+
+Post-deploy evidence:
+
+`OPENAI_APP_DIRECTORY_TEST_EVIDENCE_20260604.md`
 
 ## Privacy And Safety
 
@@ -97,22 +103,29 @@ Reviewers should see:
 
 Update this section before each submission attempt with dated evidence:
 
-- `https://pro-mcp.beyondtax.co/mcp` returns `401`
-- `https://pro.beyondtax.co/docs/mcp` returns `200`
-- `https://pro.beyondtax.co/privacy` returns `200`
-- `https://pro.beyondtax.co/terms` returns `200`
-- `https://pro-mcp.beyondtax.co/docs/mcp` redirects to `https://pro.beyondtax.co/docs/mcp`
-- `https://pro-mcp.beyondtax.co/privacy` redirects to `https://pro.beyondtax.co/privacy`
-- `https://pro-mcp.beyondtax.co/terms` redirects to `https://pro.beyondtax.co/terms`
+- 2026-06-04: `https://pro-mcp.beyondtax.co/mcp` returns `401`
+- 2026-06-04: `https://pro.beyondtax.co/docs/mcp` returns `200`
+- 2026-06-04: `https://pro.beyondtax.co/privacy` returns `200`
+- 2026-06-04: `https://pro.beyondtax.co/terms` returns `200`
+- 2026-06-04: `https://pro-mcp.beyondtax.co/docs/mcp` redirects to `https://pro.beyondtax.co/docs/mcp`, then returns `200`
+- 2026-06-04: `https://pro-mcp.beyondtax.co/privacy` redirects to `https://pro.beyondtax.co/privacy`, then returns `200`
+- 2026-06-04: `https://pro-mcp.beyondtax.co/terms` redirects to `https://pro.beyondtax.co/terms`, then returns `200`
+- 2026-06-04: OAuth metadata uses `https://pro.beyondtax.co/docs/mcp`, `https://pro.beyondtax.co/privacy`, and `https://pro.beyondtax.co/terms`
+- 2026-06-04: OAuth/protected resource display casing is `Beyondtax Pro`
+- 2026-06-04: Production backend commit verified at `7241a26faf5d015a27ef21aadd1b96f6fe6bb01a`
+- 2026-06-04: Production Django system check passed
+- 2026-06-04: Production focused MCP test suite passed, `8` tests OK
+- 2026-06-04: Production container source has `has_contact_person` booleans and no raw `contact_person` serializer field for business/group client detail payloads
 
 ## Release Notes
 
 Record before submission:
 
-- Submitted plugin version
-- Marketplace commit hash
-- Backend deploy commit hash
-- UI deploy commit hash
-- Tool/prompt registry snapshot
-- Known limitations
-- Backward compatibility notes
+- Submitted plugin version: `0.1.2`
+- Marketplace commit hash: `2573dd95cd2319c957e0c6ab74addc0dd6b0bc19`
+- Backend source privacy patch checked: `61d84309de94bdda8567eff8a1860319fb9784f5` (PR #310)
+- Backend deployed commit hash: `7241a26faf5d015a27ef21aadd1b96f6fe6bb01a`
+- UI deploy commit hash: verify in hosting dashboard before final submit
+- Tool/prompt registry snapshot: `26` tools and `7` prompts
+- Known limitations: read-oriented only; no filing, payment, messaging, record mutation, or deletion actions
+- Backward compatibility notes: old `pro-mcp.beyondtax.co` docs/legal URLs redirect to canonical Pro UI pages
