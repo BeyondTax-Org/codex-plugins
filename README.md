@@ -16,7 +16,32 @@ Plugin display name:
 
 `Beyondtax Pro`
 
+### Codex CLI install
+
+Add the marketplace:
+
+```powershell
+codex plugin marketplace add https://github.com/BeyondTax-Org/codex-plugins
+```
+
+Install the plugin:
+
+```powershell
+codex plugin add beyondtax-pro@beyondtax
+```
+
+Confirm it is enabled:
+
+```powershell
+codex plugin list
+codex mcp get beyondtax-pro
+```
+
 The plugin is read-oriented and uses OAuth. During install, Codex should ask the user to complete the Beyondtax Pro OAuth login flow. If the plugin does not appear after adding the marketplace, refresh or restart Codex and check the plugin picker again.
+
+## Visibility Boundary
+
+This repository makes Beyondtax Pro installable from a public Codex plugin marketplace. Built-in or curated OpenAI plugin-directory visibility is a separate OpenAI review and rollout path, and can depend on the user's plan, workspace settings, feature access, rollout status, and admin controls.
 
 ## Marketplace
 
@@ -39,3 +64,13 @@ Before describing the plugin as publicly ready, verify:
 - `https://pro-mcp.beyondtax.co/docs/mcp`, `/privacy`, and `/terms` redirect to the canonical Pro pages.
 - The Pro MCP registry includes `get_server_instructions`.
 - The marketplace policy keeps `authentication` as `ON_INSTALL`.
+
+## Verified Public Install
+
+Clean-profile metadata install was verified on 2026-06-04 using a temporary Codex profile:
+
+- Marketplace added as `beyondtax`.
+- Plugin installed as `beyondtax-pro@beyondtax`.
+- Display name: `Beyondtax Pro`.
+- Endpoint: `https://pro-mcp.beyondtax.co/mcp`.
+- OAuth was not completed during this metadata-only verification.
