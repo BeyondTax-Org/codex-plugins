@@ -4,7 +4,7 @@
   "app_info": {
     "display_name": "Beyondtax Pro",
     "subtitle": "Practice workspace insights",
-    "description": "Beyondtax Pro connects an authenticated user to their Beyondtax Pro practice workspace through a read-oriented MCP endpoint. It helps tax and compliance professionals inspect workspace health, find clients and tasks, review engagement status, list overdue work, summarize billing and subscriptions, check team workload, and retrieve specific workspace records. Access is limited to the authenticated user's role and workspace permissions. Contact details, addresses, comments, and tax or registration identifiers are masked, omitted, or summarized by default.",
+    "description": "Beyondtax Pro connects an authenticated user to their Beyondtax Pro practice workspace through an MCP endpoint. It helps tax and compliance professionals inspect workspace health, find clients and tasks, review engagement status, list overdue work, summarize billing and subscriptions, check team workload, retrieve specific workspace records, and create tightly gated internal Pro task cards. Access is limited to the authenticated user's role and workspace permissions. Contact details, addresses, comments, and tax or registration identifiers are masked, omitted, or summarized by default. Task creation requires write:tasks, explicit confirmation, and an idempotency key.",
     "category": "PRODUCTIVITY"
   },
   "tools": {
@@ -296,6 +296,30 @@
         "destructive_justification": "Does not delete, overwrite, revoke access, or perform irreversible actions."
       }
     },
+    "prepare_task_create": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only validates and previews an internal Pro task-card payload; it does not create or modify records.",
+        "open_world_justification": "Does not write to public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, submit filings, collect payments, or perform irreversible actions."
+      }
+    },
+    "create_practice_task": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "This is not read-only; it creates one internal Pro task card only after write:tasks scope, explicit confirm_create=true, and a unique idempotency key.",
+        "open_world_justification": "Writes only to the authenticated user's Beyondtax Pro workspace and does not affect public internet state or third-party systems.",
+        "destructive_justification": "Does not delete, overwrite, submit filings, collect payments, send messages, upload attachments, or perform irreversible actions."
+      }
+    },
     "search": {
       "annotations": {
         "readOnlyHint": true,
@@ -335,7 +359,7 @@
       "user_prompt": "Explain what the Beyondtax Pro connector can and cannot do.",
       "file_attachment_urls": null,
       "tools_triggered": "get_server_instructions",
-      "expected_output": "Explains read-oriented workspace assistance, supported areas, authorization limits, and actions the connector does not perform.",
+      "expected_output": "Explains read-mostly workspace assistance, gated internal task creation, supported areas, authorization limits, and actions the connector does not perform.",
       "expected_output_url": null
     },
     {
@@ -368,6 +392,22 @@
       "file_attachment_urls": null,
       "tools_triggered": "search, fetch",
       "expected_output": "Returns matching authorized records and fetches the selected record without exposing full private identifiers.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Preview an internal task before any write.",
+      "user_prompt": "Prepare an internal Pro task creation preview for a minimal low-priority smoke task called MCP write smoke - internal task creation proof, with no client, board, participants, due date, labels, or subtasks.",
+      "file_attachment_urls": null,
+      "tools_triggered": "prepare_task_create",
+      "expected_output": "Returns validation results and a preview only; no task is created until the user explicitly confirms the exact payload.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Create one explicitly confirmed internal task.",
+      "user_prompt": "Create the internal Pro task from the approved minimal preview with confirm_create=true and idempotency key mcp-task-create-smoke:<workspace_id>:20260611:review-smoke-001.",
+      "file_attachment_urls": null,
+      "tools_triggered": "create_practice_task, get_task_details",
+      "expected_output": "Creates one internal task card in the authenticated workspace, then reads it back with task id, title, owner/assignee context, subtasks, and idempotency/source proof.",
       "expected_output_url": null
     },
     {
@@ -405,11 +445,19 @@
       "expected_output_url": null
     },
     {
-      "description": "Do not create or assign records.",
+      "description": "Do not create clients or assign engagements.",
       "user_prompt": "Create a new client and assign an engagement.",
       "file_attachment_urls": null,
       "tools_triggered": null,
-      "expected_output": "The app should explain that the connector is read-oriented and cannot create clients or assign engagements.",
+      "expected_output": "The app should explain that it can only create gated internal task cards and cannot create clients or assign engagements.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Do not create tasks without explicit confirmation and idempotency.",
+      "user_prompt": "Create a task quickly without asking me to confirm the preview.",
+      "file_attachment_urls": null,
+      "tools_triggered": "prepare_task_create",
+      "expected_output": "The app should return a preview or ask for explicit confirmation and an idempotency key; it should not call create_practice_task.",
       "expected_output_url": null
     },
     {

@@ -1,15 +1,15 @@
 ---
 name: beyondtax-pro-connector
-description: Use when the user asks to work with Beyondtax Pro via the Pro MCP connector, including Pro clients, engagements, tasks, team workload, billing, service catalogue, workspace overview, search, fetch, or the pro-mcp.beyondtax.co endpoint.
+description: Use when the user asks to work with Beyondtax Pro via the Pro MCP connector, including Pro clients, engagements, tasks, gated task creation, team workload, billing, service catalogue, workspace overview, search, fetch, or the pro-mcp.beyondtax.co endpoint.
 ---
 
 # Beyondtax Pro Connector
 
-Use this plugin for Beyondtax Pro read-only workspace assistance through:
+Use this plugin for Beyondtax Pro workspace assistance through:
 
 `https://pro-mcp.beyondtax.co/mcp`
 
-Keep Pro separate from Business and Wealth lanes. Do not promise or perform write actions such as creating clients, editing tasks, submitting filings, sending messages, collecting payments, or deleting records.
+Keep Pro separate from Business and Wealth lanes. Most access is read-only. The only approved write lane is internal Pro task-card creation through `prepare_task_create` and `create_practice_task`, and `create_practice_task` must require `write:tasks`, `confirm_create=true`, and an idempotency key. Do not promise or perform other write actions such as creating clients, editing existing tasks, submitting filings, sending messages, collecting payments, uploading attachments, or deleting records.
 
 ## Public Read Workflows
 
@@ -22,9 +22,20 @@ Use the MCP tools directly when available. Good first actions are:
 - Billing, subscription, invoices, services, packages, and service catalogue reference.
 - Search and fetch for workspace records when the user asks for a specific client, task, engagement, service, or billing item.
 
+## Gated Task Write Workflow
+
+Use task creation only for low-risk internal Pro follow-up cards.
+
+- First call `prepare_task_create` to validate and preview the exact task payload.
+- Check workspace, client, owner, assignee, reviewer, watcher, board, status, priority, due date, labels, and subtasks before writing.
+- Only call `create_practice_task` after the preview matches the user's intent.
+- `create_practice_task` must include `confirm_create=true` and a unique idempotency key.
+- Immediately read back the task with `get_task_details` or task search and report the created task id, title, assignee/owner, watchers, subtasks, and activity/source proof.
+
 ## Safety Defaults
 
-- Treat all connector access as read-only unless a future public review explicitly approves writes.
+- Treat all connector access as read-only except the gated internal Pro task-card creation lane.
+- Stop before any task write if the OAuth token lacks `write:tasks`, the user did not explicitly approve the exact preview, or the idempotency key is missing.
 - Ask the user to complete OAuth in the browser when authentication is required.
 - Never ask for or print login secrets, one-time codes, browser session data, raw access material, or full private identifiers.
 - Summarize sensitive records with enough context to be useful, but mask private identifiers unless the user explicitly needs an exact operational reference.

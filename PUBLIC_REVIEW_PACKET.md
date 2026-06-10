@@ -19,11 +19,11 @@
 ## Access And Safety
 
 - Authentication: OAuth during install.
-- Tool posture: read-oriented.
+- Tool posture: read-mostly with one gated internal Pro task-card creation lane.
 - Data scope: limited to records the authenticated Beyondtax Pro user can access.
 - Sensitive fields: structured contact fields, addresses, comments, and tax or registration identifiers are masked, omitted, or summarized by default.
 - Discovery search: intentionally name/title oriented; it does not match contact or tax identifiers.
-- Write actions: not promised and not available through the public plugin package.
+- Write actions: limited to internal Pro task-card creation through `prepare_task_create` and `create_practice_task`; `create_practice_task` requires `write:tasks`, `confirm_create=true`, and an idempotency key. Client creation, engagement assignment, edits, filings, payments, outbound messages, attachment upload, and deletes are not promised or available.
 
 ## Verified Checks
 

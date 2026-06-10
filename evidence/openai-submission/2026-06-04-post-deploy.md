@@ -32,14 +32,16 @@ Date: 2026-06-04
 - Terms URI: `https://pro.beyondtax.co/terms`
 - Logo URI: `https://pro-mcp.beyondtax.co/logo.png`
 - Resource name: `Beyondtax Pro`
-- Scopes: `read:workspace`, `read:clients`, `read:engagements`, `read:tasks`, `read:billing`, `read:team`, `read:search`
+- Historical 2026-06-04 scopes: `read:workspace`, `read:clients`, `read:engagements`, `read:tasks`, `read:billing`, `read:team`, `read:search`
+- Current 2026-06-11 scope update: OAuth metadata also advertises `write:tasks`
 
 ## Live MCP Registry Evidence
 
-- Tool count: `26`
+- Historical 2026-06-04 tool count: `26`
 - Prompt count: `7`
 - `get_server_instructions`: present
-- Detailed registry snapshot: `OPENAI_APP_DIRECTORY_REGISTRY_SNAPSHOT_20260604.md`
+- Historical detailed registry snapshot: `OPENAI_APP_DIRECTORY_REGISTRY_SNAPSHOT_20260604.md`
+- Current detailed registry expectation: `OPENAI_APP_DIRECTORY_REGISTRY_SNAPSHOT_20260611.md`
 
 ## Privacy Evidence
 
@@ -70,4 +72,3 @@ Required reviewer-account assertions before final submit:
 - Current plugin package has icon and logo assets.
 - If OpenAI dashboard asks for screenshots, use public docs screenshots and/or sanitized demo-workspace screenshots only.
 - Do not upload screenshots containing real client identifiers, raw tax identifiers, private addresses, or private contact information.
-

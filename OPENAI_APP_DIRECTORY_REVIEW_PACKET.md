@@ -36,23 +36,25 @@ Built-in OpenAI app/plugin directory visibility is separate. It requires OpenAI 
 
 ## Public Tool Posture
 
-- Read-oriented workspace assistance only
-- No create, edit, delete, submit, pay, file, or send-message actions promised
+- Read-mostly workspace assistance with one gated internal Pro task-card creation lane
+- No client creation, engagement assignment, edit, delete, submit, pay, file, attachment upload, or send-message actions promised
+- Task creation requires `write:tasks`, `confirm_create=true`, and an idempotency key
 - Discovery search is name/title oriented and does not match contact or tax identifiers
 - Structured contact fields, addresses, comments, and tax or registration identifiers are masked, omitted, or summarized by default
 
 ## Tool And Prompt Inventory
 
-- 2026-06-04 live production registry snapshot:
-  - Tool count: `26`
+- 2026-06-11 live production/backend registry expectation:
+  - Tool count: `28`
   - Prompt count: `7`
   - `get_server_instructions`: present
+  - Gated write tools: `prepare_task_create`, `create_practice_task`
   - Search posture: client display name/city, engagement name, task title
   - Privacy posture: contact/address/comment/tax identifiers masked, omitted, summarized, or exposed only as presence flags
 
 Detailed snapshot:
 
-`OPENAI_APP_DIRECTORY_REGISTRY_SNAPSHOT_20260604.md`
+`OPENAI_APP_DIRECTORY_REGISTRY_SNAPSHOT_20260611.md`
 
 ## Demo Review Account
 
@@ -94,9 +96,10 @@ Reviewers should see:
 
 - Data access is limited by the authenticated user's Beyondtax Pro role and workspace permissions
 - Contact and tax identifier data is minimized by default
-- User-facing docs disclose the read-oriented scope
+- User-facing docs disclose the read-mostly scope and the gated internal task-card creation lane
 - OAuth and policy URLs point to canonical Pro pages
-- No write, payment, filing, messaging, or deletion actions are available in the public plugin
+- No payment, filing, messaging, deletion, attachment upload, client creation, or engagement-assignment actions are available in the public plugin
+- Internal task-card creation requires explicit confirmation and idempotency
 - Users should not paste login secrets, one-time codes, browser session data, or raw access material into chat
 
 ## Live Verification
@@ -121,11 +124,11 @@ Update this section before each submission attempt with dated evidence:
 
 Record before submission:
 
-- Submitted plugin version: `0.1.2`
+- Submitted plugin version: `0.1.3`
 - Marketplace commit hash: `2573dd95cd2319c957e0c6ab74addc0dd6b0bc19`
 - Backend source privacy patch checked: `61d84309de94bdda8567eff8a1860319fb9784f5` (PR #310)
 - Backend deployed commit hash: `7241a26faf5d015a27ef21aadd1b96f6fe6bb01a`
 - UI deploy commit hash: verify in hosting dashboard before final submit
-- Tool/prompt registry snapshot: `26` tools and `7` prompts
-- Known limitations: read-oriented only; no filing, payment, messaging, record mutation, or deletion actions
+- Tool/prompt registry snapshot: `28` tools and `7` prompts
+- Known limitations: only gated internal task-card creation is writable; no filing, payment, messaging, client creation, engagement assignment, attachment upload, or deletion actions
 - Backward compatibility notes: old `pro-mcp.beyondtax.co` docs/legal URLs redirect to canonical Pro UI pages

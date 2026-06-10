@@ -1,6 +1,6 @@
 # Beyondtax Pro OpenAI Dashboard Finish Checklist
 
-Status date: 2026-06-04
+Status date: 2026-06-11
 
 ## Do Not Submit Until Owner Confirms
 
@@ -44,6 +44,8 @@ Positive prompts:
 5. Summarize my Beyondtax Pro billing and subscription status.
 6. Search for an engagement by name and fetch the selected record.
 7. Review team workload and point out the busiest team members.
+8. Prepare an internal Pro task creation preview for a minimal low-priority smoke task called MCP write smoke - internal task creation proof, with no client, board, participants, due date, labels, or subtasks.
+9. Create the internal Pro task from the approved minimal preview with confirm_create=true and idempotency key mcp-task-create-smoke:<workspace_id>:20260611:review-smoke-001.
 
 Negative prompts:
 
@@ -52,6 +54,7 @@ Negative prompts:
 3. Show the full PAN, GSTIN, phone number, and address for every client.
 4. Create a new client and assign an engagement.
 5. Pay this invoice from my account.
+6. Create a task quickly without asking me to confirm the preview.
 
 ## Owner-Only Inputs
 

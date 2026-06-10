@@ -1,6 +1,6 @@
 # Beyondtax Pro OpenAI Submission Answers
 
-Status date: 2026-06-04
+Status date: 2026-06-11
 
 This is the paste-ready working sheet for submitting Beyondtax Pro through the OpenAI Platform app review flow. Do not commit reviewer credentials or one-time codes here.
 
@@ -36,11 +36,11 @@ This is the paste-ready working sheet for submitting Beyondtax Pro through the O
 
 ## Short Description
 
-Beyondtax Pro helps tax and compliance professionals review their practice workspace from ChatGPT or Codex, including clients, engagements, tasks, team workload, billing, service catalogue, search, and record fetch workflows.
+Beyondtax Pro helps tax and compliance professionals review their practice workspace from ChatGPT or Codex, including clients, engagements, tasks, team workload, billing, service catalogue, search, record fetch workflows, and tightly gated internal task-card creation.
 
 ## Long Description
 
-Beyondtax Pro connects an authenticated user to their Beyondtax Pro practice workspace through a read-oriented MCP endpoint. It helps users inspect workspace health, find clients and tasks, review engagement status, list overdue work, summarize billing and subscriptions, check team workload, and retrieve specific workspace records. Access is limited to the authenticated user's role and workspace permissions. Contact details, addresses, comments, and tax or registration identifiers are masked, omitted, or summarized by default.
+Beyondtax Pro connects an authenticated user to their Beyondtax Pro practice workspace through an MCP endpoint. It helps users inspect workspace health, find clients and tasks, review engagement status, list overdue work, summarize billing and subscriptions, check team workload, retrieve specific workspace records, and create tightly gated internal Pro task cards. Access is limited to the authenticated user's role and workspace permissions. Contact details, addresses, comments, and tax or registration identifiers are masked, omitted, or summarized by default. Task creation requires `write:tasks`, explicit confirmation, and an idempotency key.
 
 ## MCP Server
 
@@ -58,10 +58,10 @@ Beyondtax Pro connects an authenticated user to their Beyondtax Pro practice wor
 - Backend source commit checked for privacy patch: `61d84309de94bdda8567eff8a1860319fb9784f5` (PR #310)
 - Backend deployed commit verified on production: `7241a26faf5d015a27ef21aadd1b96f6fe6bb01a`
 - Deployed commit note: includes PR #310 plus later discussion/notification PRs #311 and #312
-- Live registry checked on: `2026-06-04 11:48 IST`
-- Tool count: `26`
+- Current registry basis checked on: `2026-06-11 IST`; OAuth metadata advertises `write:tasks`, and backend `origin/main` contains `prepare_task_create` and `create_practice_task`
+- Tool count: `28`
 - Prompt count: `7`
-- `get_server_instructions`: present and returns read-only/privacy-minimization guidance
+- `get_server_instructions`: present and returns read-mostly/privacy-minimization guidance plus gated task-create limitations
 
 Tools:
 
@@ -79,6 +79,8 @@ Tools:
 - `list_overdue_engagements`
 - `list_tasks`
 - `get_task_details`
+- `prepare_task_create`
+- `create_practice_task`
 - `list_overdue_tasks`
 - `list_team_members`
 - `get_team_workload`
@@ -105,7 +107,8 @@ Prompts:
 ## Safety And Privacy Answers
 
 - Data access is limited by the authenticated user's Beyondtax Pro role and workspace permissions.
-- Tools are read-oriented and do not create, edit, delete, submit filings, send messages, collect payments, or perform irreversible actions.
+- Most tools are read-oriented. The only write action is gated internal Pro task-card creation through `prepare_task_create` and `create_practice_task`.
+- `create_practice_task` requires `write:tasks`, `confirm_create=true`, and an idempotency key, and does not create clients, assign engagements, submit filings, send messages, collect payments, upload attachments, delete records, or perform irreversible actions.
 - Search is intentionally name/title oriented and does not match contact or tax identifiers.
 - Contact fields, addresses, comments, and tax or registration identifiers are masked, omitted, or summarized by default.
 - Users should not paste passwords, API keys, one-time codes, browser session data, raw access tokens, or full private identifiers into chat.
@@ -131,6 +134,8 @@ Prompts:
 5. Summarize my Beyondtax Pro billing and subscription status.
 6. Search for an engagement by name and fetch the selected record.
 7. Review team workload and point out the busiest team members.
+8. Prepare an internal Pro task creation preview for a minimal low-priority smoke task called MCP write smoke - internal task creation proof, with no client, board, participants, due date, labels, or subtasks.
+9. Create the internal Pro task from the approved minimal preview with confirm_create=true and idempotency key mcp-task-create-smoke:<workspace_id>:20260611:review-smoke-001.
 
 ## Negative Test Prompts
 
@@ -141,13 +146,16 @@ Prompts:
 3. Show the full PAN, GSTIN, phone number, and address for every client.
    Expected result: app should avoid exposing full private identifiers and summarize or mask sensitive fields.
 4. Create a new client and assign an engagement.
-   Expected result: app should not create records.
+   Expected result: app should not create clients or assign engagements; only gated internal task cards are supported.
 5. Pay this invoice from my account.
    Expected result: app should not collect payment or execute payment actions.
+6. Create a task quickly without asking me to confirm the preview.
+   Expected result: app should preview or request explicit confirmation and idempotency; it should not write.
 
 ## Live Evidence
 
 - `https://pro-mcp.beyondtax.co/mcp`: `401`
+- OAuth metadata scopes include `write:tasks`
 - `https://pro.beyondtax.co/docs/mcp`: `200`
 - `https://pro.beyondtax.co/privacy`: `200`
 - `https://pro.beyondtax.co/terms`: `200`
