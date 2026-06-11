@@ -1,6 +1,6 @@
 {
   "name": "beyondtax-pro",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Use the Beyondtax Pro MCP connector from Codex.",
   "author": {
     "name": "Beyondtax",
@@ -22,8 +22,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Beyondtax Pro",
-    "shortDescription": "Work with Pro clients, engagements, tasks, billing, and gated task creation.",
-    "longDescription": "Beyondtax Pro connects Codex to the Pro MCP endpoint for workspace, client, engagement, task, team, billing, service-catalogue, and search workflows. Most tools are read-only; task creation is limited to a guarded internal Pro task-card flow that requires write:tasks, explicit confirmation, and an idempotency key.",
+    "shortDescription": "Work with Pro clients, engagements, tasks, billing, and gated task writes.",
+    "longDescription": "Beyondtax Pro connects Codex to the Pro MCP endpoint for workspace, client, engagement, task, team, billing, service-catalogue, and search workflows. Most tools are read-only; task writes are limited to guarded internal Pro task-card create and soft-delete flows that require write:tasks, exact preview, explicit confirmation, and an idempotency key.",
     "developerName": "Beyondtax",
     "category": "Productivity",
     "capabilities": [
@@ -37,7 +37,8 @@
       "Show my Beyondtax Pro workspace overview.",
       "Find a Pro client or task.",
       "List my open Pro tasks.",
-      "Prepare a Pro task creation preview."
+      "Prepare a Pro task creation preview.",
+      "Prepare a Pro task delete preview."
     ],
     "brandColor": "#40806F",
     "composerIcon": "./assets/icon.svg",

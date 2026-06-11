@@ -37,7 +37,7 @@ codex plugin list
 codex mcp get beyondtax-pro
 ```
 
-The plugin uses OAuth. Most tools are read-only; the only write lane is guarded internal Pro task-card creation through `prepare_task_create` and `create_practice_task`, requiring `write:tasks`, `confirm_create=true`, and an idempotency key. During install, Codex should ask the user to complete the Beyondtax Pro OAuth login flow. If the plugin does not appear after adding the marketplace, refresh or restart Codex and check the plugin picker again.
+The plugin uses OAuth. Most tools are read-only; task writes are limited to guarded internal Pro task-card creation through `prepare_task_create` and `create_practice_task`, and guarded task-card soft-delete through `prepare_task_delete` and `delete_practice_task`. Writes require `write:tasks`, exact preview, explicit confirmation, and an idempotency key. During install, Codex should ask the user to complete the Beyondtax Pro OAuth login flow. If the plugin does not appear after adding the marketplace, refresh or restart Codex and check the plugin picker again.
 
 ## Visibility Boundary
 
@@ -63,7 +63,7 @@ Before describing the plugin as publicly ready, verify:
 - `https://pro.beyondtax.co/terms` returns 200.
 - `https://pro-mcp.beyondtax.co/docs/mcp`, `/privacy`, and `/terms` redirect to the canonical Pro pages.
 - The Pro MCP registry includes `get_server_instructions`.
-- The Pro MCP registry includes `prepare_task_create` and `create_practice_task` only when `write:tasks` is advertised and approved.
+- The Pro MCP registry includes `prepare_task_create`, `create_practice_task`, `prepare_task_delete`, and `delete_practice_task` only when `write:tasks` is advertised and approved.
 - The marketplace policy keeps `authentication` as `ON_INSTALL`.
 
 ## Verified Public Install

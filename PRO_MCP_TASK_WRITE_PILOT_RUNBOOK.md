@@ -1,10 +1,10 @@
 # Beyondtax Pro MCP Task Write Pilot Runbook
 
-Status date: 2026-06-11
+Status date: 2026-06-12
 
 ## Goal
 
-Use the new Pro MCP write lane for one safe internal task-card creation pilot, then verify exact readback.
+Use the Pro MCP write lanes for safe internal task-card creation or exact task-card soft-delete pilots, then verify exact readback.
 
 ## Allowed Write
 
@@ -14,13 +14,23 @@ Use the new Pro MCP write lane for one safe internal task-card creation pilot, t
 - Required confirmation: `confirm_create=true`
 - Required idempotency: unique `idempotency_key`
 
+## Allowed Soft-Delete
+
+- Tool: `delete_practice_task`
+- Required preview: `prepare_task_delete`
+- Required OAuth scope: `write:tasks`
+- Required confirmation: `confirm_delete=true`
+- Required idempotency: unique `idempotency_key`
+- Effect: soft-delete one exact internal Pro task card only (`is_active=false`)
+
 ## Hard Stops
 
 - Stop if `write:tasks` is not present in OAuth metadata or the granted token.
 - Stop if `prepare_task_create` returns validation errors.
-- Stop if the preview does not exactly match the intended task.
+- Stop if `prepare_task_delete` returns validation errors.
+- Stop if the preview does not exactly match the intended task create/delete action.
 - Stop if the user has not approved the exact preview.
-- Stop for filings, payments, billing changes, deletes, outbound messages, attachment upload, existing task edits, client creation, or engagement assignment.
+- Stop for filings, payments, billing changes, hard deletes, outbound messages, attachment upload, existing task edits beyond the approved task soft-delete lane, client creation, or engagement assignment.
 
 ## First Pilot Payload Shape
 
@@ -54,4 +64,12 @@ After `create_practice_task`, immediately read back:
 - Owner, assignee, reviewer, and watchers
 - Status, priority, due date, labels, and subtasks
 - Activity/source metadata showing MCP creation
+- Idempotency behavior by retrying the same key only if the first response is unclear
+
+After `delete_practice_task`, immediately verify:
+
+- Exact task id/public id and title from the preview
+- Returned readback has `is_active=false`
+- The exact task no longer appears in active task search/list results
+- Activity/source metadata shows MCP soft-delete
 - Idempotency behavior by retrying the same key only if the first response is unclear

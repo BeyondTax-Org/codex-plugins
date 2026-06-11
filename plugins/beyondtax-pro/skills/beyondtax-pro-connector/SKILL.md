@@ -9,7 +9,7 @@ Use this plugin for Beyondtax Pro workspace assistance through:
 
 `https://pro-mcp.beyondtax.co/mcp`
 
-Keep Pro separate from Business and Wealth lanes. Most access is read-only. The only approved write lane is internal Pro task-card creation through `prepare_task_create` and `create_practice_task`, and `create_practice_task` must require `write:tasks`, `confirm_create=true`, and an idempotency key. Do not promise or perform other write actions such as creating clients, editing existing tasks, submitting filings, sending messages, collecting payments, uploading attachments, or deleting records.
+Keep Pro separate from Business and Wealth lanes. Most access is read-only. The only approved write lanes are internal Pro task-card creation through `prepare_task_create` and `create_practice_task`, and internal Pro task-card soft-delete through `prepare_task_delete` and `delete_practice_task`. Writes must require `write:tasks`, exact preview, explicit confirmation, and an idempotency key. Do not promise or perform other write actions such as creating clients, editing existing tasks, submitting filings, sending messages, collecting payments, uploading attachments, hard-deleting records, or deleting anything outside task cards.
 
 ## Public Read Workflows
 
@@ -32,9 +32,17 @@ Use task creation only for low-risk internal Pro follow-up cards.
 - `create_practice_task` must include `confirm_create=true` and a unique idempotency key.
 - Immediately read back the task with `get_task_details` or task search and report the created task id, title, assignee/owner, watchers, subtasks, and activity/source proof.
 
+Use task delete only for exact internal Pro task-card cleanup.
+
+- First call `prepare_task_delete` to validate and preview the exact task id, title, board, status, client, participants, and counts.
+- Confirm the preview matches the user's intended card before deleting.
+- Only call `delete_practice_task` after explicit user approval.
+- `delete_practice_task` must include `confirm_delete=true` and a unique idempotency key.
+- Treat the result as a soft-delete only; immediately read back or search to verify the exact task is no longer active.
+
 ## Safety Defaults
 
-- Treat all connector access as read-only except the gated internal Pro task-card creation lane.
+- Treat all connector access as read-only except the gated internal Pro task-card creation and task-card soft-delete lanes.
 - Stop before any task write if the OAuth token lacks `write:tasks`, the user did not explicitly approve the exact preview, or the idempotency key is missing.
 - Ask the user to complete OAuth in the browser when authentication is required.
 - Never ask for or print login secrets, one-time codes, browser session data, raw access material, or full private identifiers.
