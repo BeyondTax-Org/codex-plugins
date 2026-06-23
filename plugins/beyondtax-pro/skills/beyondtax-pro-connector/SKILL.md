@@ -1,6 +1,6 @@
 ---
 name: beyondtax-pro-connector
-description: Use when the user asks to work with Beyondtax Pro via the Pro MCP connector, including Pro clients, engagements, tasks, gated task creation, team workload, billing, service catalogue, workspace overview, search, fetch, or the pro-mcp.beyondtax.co endpoint.
+description: Use when the user asks to work with Beyondtax Pro via the Pro MCP connector from Codex or Claude, including Pro clients, engagements, task boards, gated task creation/deletion/object links, inactive task readback, team workload, billing, service catalogue, workspace overview, search, fetch, plugin OAuth, or the pro-mcp.beyondtax.co endpoint.
 ---
 
 # Beyondtax Pro Connector
@@ -9,28 +9,35 @@ Use this plugin for Beyondtax Pro workspace assistance through:
 
 `https://pro-mcp.beyondtax.co/mcp`
 
-Keep Pro separate from Business and Wealth lanes. Most access is read-only. The only approved write lanes are internal Pro task-card creation through `prepare_task_create` and `create_practice_task`, and internal Pro task-card soft-delete through `prepare_task_delete` and `delete_practice_task`. Writes must require `write:tasks`, exact preview, explicit confirmation, and an idempotency key. Do not promise or perform other write actions such as creating clients, editing existing tasks, submitting filings, sending messages, collecting payments, uploading attachments, hard-deleting records, or deleting anything outside task cards.
+Keep Pro separate from Business and Wealth lanes. Most access is read-only. The approved low-risk task-board write lanes are internal Pro task-card creation, task-card soft-delete, and task object/resource links when the user explicitly asks for them. Writes must require the right scope, exact preview when available, explicit confirmation, and an idempotency key. Do not promise or perform other write actions such as creating clients, submitting filings, sending messages, collecting payments, uploading attachments, hard-deleting records, or mutating anything outside the authorized Pro task-board surface.
+
+Codex and Claude can both use this connector when the plugin package is installed and OAuth is complete. Treat OAuth as per-client session state: Codex being authenticated does not prove Claude is authenticated.
 
 ## Public Read Workflows
 
 Use the MCP tools directly when available. Good first actions are:
 
+- `list_my_workspaces` to verify workspace id/name before scoped work.
+- `list_task_boards` before board-specific task creation or status selection.
 - Workspace overview and account context.
 - Client lookup, client summaries, and onboarding status review.
 - Engagement status, phase progress, due dates, and ownership review.
 - Task lists, overdue work, assignee workload, and priority summaries.
 - Billing, subscription, invoices, services, packages, and service catalogue reference.
 - Search and fetch for workspace records when the user asks for a specific client, task, engagement, service, or billing item.
+- `include_inactive=true` only for audit/readback of soft-deleted tasks. Keep normal task search/details active-only.
 
 ## Gated Task Write Workflow
 
 Use task creation only for low-risk internal Pro follow-up cards.
 
+- Call `list_task_boards` first if the board id or board status mapping is not already proven.
+- Call `find_similar_tasks` or exact-title `search_tasks` before creating a non-trivial card.
 - First call `prepare_task_create` to validate and preview the exact task payload.
 - Check workspace, client, owner, assignee, reviewer, watcher, board, status, priority, due date, labels, and subtasks before writing.
 - Only call `create_practice_task` after the preview matches the user's intent.
 - `create_practice_task` must include `confirm_create=true` and a unique idempotency key.
-- Immediately read back the task with `get_task_details` or task search and report the created task id, title, assignee/owner, watchers, subtasks, and activity/source proof.
+- Immediately read back the task with `get_task_details`, task search, object-link readback, and activity/source proof as relevant.
 
 Use task delete only for exact internal Pro task-card cleanup.
 
@@ -38,13 +45,22 @@ Use task delete only for exact internal Pro task-card cleanup.
 - Confirm the preview matches the user's intended card before deleting.
 - Only call `delete_practice_task` after explicit user approval.
 - `delete_practice_task` must include `confirm_delete=true` and a unique idempotency key.
-- Treat the result as a soft-delete only; immediately read back or search to verify the exact task is no longer active.
+- Treat the result as a soft-delete only; immediately verify active-only search no longer returns the card and `get_task_details(include_inactive=true)` shows `is_active=false`.
+
+Use task object/resource links as references, not file uploads.
+
+- Use `create_task_object_link(confirm_link=false)` first to preview.
+- Use `confirm_link=true` only after the preview matches and an idempotency key is supplied.
+- Use `external` or `document` links for local evidence paths or URLs.
+- Do not upload binary attachments unless a separate approved upload tool and policy exists.
 
 ## Safety Defaults
 
-- Treat all connector access as read-only except the gated internal Pro task-card creation and task-card soft-delete lanes.
+- Treat all connector access as read-only except the gated internal Pro task-card creation, task-card soft-delete, and task object/resource-link lanes.
+- For any newer task-board write tool such as task update, comment, subtask, link, milestone, or bulk task creation, stop unless the user gives exact fresh approval and the tool exposes a safe preview/idempotency pattern or the user explicitly accepts the narrower risk.
 - Stop before any task write if the OAuth token lacks `write:tasks`, the user did not explicitly approve the exact preview, or the idempotency key is missing.
 - Ask the user to complete OAuth in the browser when authentication is required.
+- If Claude shows `Needs authentication`, report that the plugin is installed/discovered but Claude still needs its own OAuth login/restart.
 - Never ask for or print login secrets, one-time codes, browser session data, raw access material, or full private identifiers.
 - Summarize sensitive records with enough context to be useful, but mask private identifiers unless the user explicitly needs an exact operational reference.
 - If a result depends on workspace permissions, say that access is limited by the user's Beyondtax Pro role and enabled workspace features.
