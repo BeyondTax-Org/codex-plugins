@@ -1,0 +1,10 @@
+{
+  "name": "beyondtax-pro",
+  "version": "0.1.5",
+  "description": "Connect Claude Code to the Beyondtax Pro MCP endpoint for workspace, client, engagement, task, team, billing, services, and guarded internal task-card workflows.",
+  "author": {
+    "name": "Beyondtax",
+    "email": "support@beyondtax.co"
+  },
+  "homepage": "https://pro.beyondtax.co/docs/mcp"
+}

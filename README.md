@@ -1,6 +1,6 @@
-# Beyondtax Codex Plugins
+# Beyondtax Codex And Claude Plugins
 
-Public Codex plugin marketplace for Beyondtax integrations.
+Public Codex plugin marketplace for Beyondtax integrations, with a local Claude Code marketplace wrapper for the same Beyondtax Pro MCP connector.
 
 ## Install Beyondtax Pro
 
@@ -39,15 +39,53 @@ codex mcp get beyondtax-pro
 
 The plugin uses OAuth. Most tools are read-only; task writes are limited to guarded internal Pro task-card creation through `prepare_task_create` and `create_practice_task`, and guarded task-card soft-delete through `prepare_task_delete` and `delete_practice_task`. Writes require `write:tasks`, exact preview, explicit confirmation, and an idempotency key. During install, Codex should ask the user to complete the Beyondtax Pro OAuth login flow. If the plugin does not appear after adding the marketplace, refresh or restart Codex and check the plugin picker again.
 
+### Claude Code local install
+
+This repo also includes a Claude Code marketplace manifest at:
+
+`.claude-plugin/marketplace.json`
+
+Add the local marketplace:
+
+```powershell
+claude plugin marketplace add D:\BeyondTax\Beyondtax_Pro\04_Repos\codex-plugins
+```
+
+Install the plugin:
+
+```powershell
+claude plugin install beyondtax-pro@beyondtax-local
+```
+
+Confirm it is enabled and visible to Claude:
+
+```powershell
+claude plugin list
+claude plugin details beyondtax-pro@beyondtax-local
+claude mcp list
+```
+
+Expected pre-OAuth MCP health:
+
+```text
+plugin:beyondtax-pro:beyondtax-pro: https://pro-mcp.beyondtax.co/mcp (HTTP) - ! Needs authentication
+```
+
+After OAuth is completed inside Claude Code, the same endpoint should expose the Beyondtax Pro MCP tools, including task-board lookup, guarded task create/delete previews, confirmed task-card create/delete with idempotency, object links, and inactive task readback through `include_inactive=true`.
+
 ## Visibility Boundary
 
 This repository makes Beyondtax Pro installable from a public Codex plugin marketplace. Built-in or curated OpenAI plugin-directory visibility is a separate OpenAI review and rollout path, and can depend on the user's plan, workspace settings, feature access, rollout status, and admin controls.
 
 ## Marketplace
 
-Marketplace file:
+Codex marketplace file:
 
 `.agents/plugins/marketplace.json`
+
+Claude local marketplace file:
+
+`.claude-plugin/marketplace.json`
 
 Plugin package:
 

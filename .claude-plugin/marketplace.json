@@ -1,0 +1,22 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "beyondtax-local",
+  "description": "Local Beyondtax plugin marketplace for Claude Code.",
+  "owner": {
+    "name": "Beyondtax",
+    "email": "support@beyondtax.co"
+  },
+  "plugins": [
+    {
+      "name": "beyondtax-pro",
+      "description": "Connect Claude Code to the Beyondtax Pro MCP endpoint for workspace, client, engagement, task, team, billing, services, and guarded internal task-card workflows.",
+      "author": {
+        "name": "Beyondtax",
+        "email": "support@beyondtax.co"
+      },
+      "category": "productivity",
+      "source": "./plugins/beyondtax-pro",
+      "homepage": "https://pro.beyondtax.co/docs/mcp"
+    }
+  ]
+}
